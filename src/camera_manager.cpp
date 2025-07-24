@@ -1,6 +1,7 @@
 #include "camera_manager.h"
 #include "board_config.h"
 #include "camera_pins.h"
+#include <cstring>
 
 CameraManager cameraManager;
 
@@ -192,7 +193,7 @@ bool CameraManager::setAutoWhiteBalance(bool enable) {
 
 bool CameraManager::setAutoExposureControl(bool enable) {
     if (!sensor) return false;
-    return sensor->set_aec(sensor, enable ? 1 : 0) == 0;
+    return sensor->set_aec2(sensor, enable ? 1 : 0) == 0;
 }
 
 bool CameraManager::setAutoExposureControl2(bool enable) {
@@ -207,7 +208,7 @@ bool CameraManager::setExposureControl(bool enable) {
 
 bool CameraManager::setAutoGainControl(bool enable) {
     if (!sensor) return false;
-    return sensor->set_agc(sensor, enable ? 1 : 0) == 0;
+    return sensor->set_aec2(sensor, enable ? 1 : 0) == 0;
 }
 
 bool CameraManager::setGainControlling(int level) {

@@ -1,6 +1,8 @@
 #ifndef INTEL_GLASSES_CONFIG_H
 #define INTEL_GLASSES_CONFIG_H
 
+#include <Arduino.h>
+
 // ===================
 // 4G Module Configuration
 // ===================
@@ -73,6 +75,12 @@ enum OperationMode {
     MODE_OCR,
     MODE_AUTO_ALL
 };
+
+// Legacy compatibility defines
+#define OP_MODE_HAZARD_DETECTION MODE_HAZARD_DETECTION
+#define OP_MODE_VISUAL_CAPTION MODE_VISUAL_CAPTION
+#define OP_MODE_SIGN_DETECTION MODE_SIGN_DETECTION
+#define OP_MODE_OCR MODE_OCR
 
 // ===================
 // Response Structure

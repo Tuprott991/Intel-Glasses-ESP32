@@ -1,6 +1,14 @@
 #include "gsm_module.h"
 #include <base64.h>
 #include <StreamDebugger.h>
+#define TINY_GSM_MODEM_SIM800
+#include <TinyGsmClient.h>
+#include <HTTPClient.h>
+
+// SIM card APN credentials (configure for your carrier)
+const char* apn = "internet";      // Your APN
+const char* gprsUser = "";         // GPRS User (leave empty if not required)
+const char* gprsPass = "";         // GPRS Password (leave empty if not required)
 
 // Create a debugging stream for GSM communication
 StreamDebugger debugger(Serial2, Serial);
@@ -116,7 +124,7 @@ APIResponse GSMModule::sendImageForAnalysis(uint8_t* imageData, size_t imageSize
     }
     
     // Create JSON payload
-    DynamicJsonDocument doc(JSON_OBJECT_SIZE(4) + base64Image.length() + 200);
+    JsonDocument doc;
     doc["image"] = base64Image;
     doc["api_key"] = CLOUD_API_KEY;
     doc["mode"] = (int)mode;
@@ -125,8 +133,9 @@ APIResponse GSMModule::sendImageForAnalysis(uint8_t* imageData, size_t imageSize
     String jsonString;
     serializeJson(doc, jsonString);
     
-    // Setup HTTP request
-    http->begin(*client, CLOUD_API_HOST, CLOUD_API_PORT, endpoint, true);
+    // Setup HTTP request (simplified URL approach for TinyGsm compatibility)
+    String url = "https://" + String(CLOUD_API_HOST) + ":" + String(CLOUD_API_PORT) + endpoint;
+    http->begin(url);  // Use URL-only method for TinyGsm compatibility
     http->addHeader("Content-Type", "application/json");
     http->addHeader("Authorization", "Bearer " + String(CLOUD_API_KEY));
     http->setTimeout(CLOUD_API_TIMEOUT);
@@ -224,7 +233,7 @@ String GSMModule::encodeImageToBase64(uint8_t* imageData, size_t imageSize) {
 APIResponse GSMModule::parseAPIResponse(String jsonResponse) {
     APIResponse response;
     
-    DynamicJsonDocument doc(2048);
+    JsonDocument doc;
     DeserializationError error = deserializeJson(doc, jsonResponse);
     
     if (error) {

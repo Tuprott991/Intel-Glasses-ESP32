@@ -7,10 +7,13 @@
 
 // Edge Impulse includes (adjust based on your model)
 // These will be generated when you export your model
+// TODO: Add Edge Impulse SDK to project
+/*
 extern "C" {
     #include "edge-impulse-sdk/classifier/ei_run_classifier.h"
     #include "edge-impulse-sdk/dsp/numpy.hpp"
 }
+*/
 
 // Speech recognition configuration
 #define SAMPLE_RATE         16000    // Sample rate in Hz
@@ -27,6 +30,7 @@ extern "C" {
 
 // Speech commands enum
 enum SpeechCommand {
+    CMD_UNKNOWN,
     CMD_NONE,
     CMD_HAZARD_MODE,
     CMD_CAPTION_MODE, 
@@ -65,11 +69,29 @@ private:
     i2s_config_t i2s_config;
     i2s_pin_config_t pin_config;
     
-    // Edge Impulse classifier
+    // Edge Impulse classifier (disabled until SDK is added)
+    /*
     signal_t signal;
     ei_impulse_result_t result;
+    */
+    
+    // Placeholder structures for compilation
+    struct {
+        int total_length;
+        void* ctx;
+        void* get_data;
+    } signal;
+    
+    struct {
+        int classification_count;
+        struct {
+            const char* label;
+            float value;
+        } classification[5];
+    } result;
     
     // Command recognition
+    float confidenceThreshold;
     unsigned long lastCommandTime;
     SpeechCommand lastCommand;
     float lastConfidence;
@@ -100,12 +122,24 @@ public:
     void setListeningMode(bool continuous);
     void adjustSensitivity(float threshold);
     
+    // Additional methods
+    SpeechResult getLastResult();
+    bool hasNewCommand();
+    void setConfidenceThreshold(float threshold);
+    bool calibrateMicrophone();
+    void enableContinuousListening(bool enable);
+    void enableKeywordDetection(bool enable);
+    bool setupI2SMicrophone();
+    void collectAudioSample();
+    bool isBufferFull();
+    void resetBuffer();
+    String commandToString(SpeechCommand cmd);
+    
     // Command mapping
     String getCommandText(SpeechCommand cmd);
     SpeechCommand getCommandFromText(const String& text);
     
     // Calibration and testing
-    void calibrateMicrophone();
     bool testMicrophone();
     void printAudioStats();
     

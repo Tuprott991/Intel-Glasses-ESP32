@@ -301,12 +301,14 @@ void IntelGlasses::processSpeechCommand(const SpeechResult& result) {
             break;
             
         case CMD_STATUS:
-            Serial.println("Voice command: System status");
-            String statusMsg = "System status: " + String(successfulProcessing) + " successful scans, " +
-                              String(batteryPercentage) + "% battery, " +
-                              (gsmModule.isNetworkConnected() ? "connected" : "disconnected");
-            aiProcessor.provideAudioFeedback(statusMsg, false);
-            displayHandler.showResult("Status reported", 2000);
+            {
+                Serial.println("Voice command: System status");
+                String statusMsg = "System status: " + String(successfulProcessing) + " successful scans, " +
+                                  String(batteryPercentage) + "% battery, " +
+                                  (gsmModule.isNetworkConnected() ? "connected" : "disconnected");
+                aiProcessor.provideAudioFeedback(statusMsg, false);
+                displayHandler.showResult("Status reported", 2000);
+            }
             break;
             
         case CMD_SLEEP:

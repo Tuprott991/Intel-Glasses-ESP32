@@ -1,6 +1,7 @@
 #ifndef CAMERA_MANAGER_H
 #define CAMERA_MANAGER_H
 
+#include <Arduino.h>
 #include "esp_camera.h"
 #include "intel_glasses_config.h"
 
@@ -53,8 +54,10 @@ public:
     bool isAutoCaptureEnabled();
     bool shouldAutoCapture();
     
-private:
+    // Default settings
     void setupDefaultSettings();
+    
+private:
     void logCameraStatus();
     bool autoCaptureEnabled;
 };

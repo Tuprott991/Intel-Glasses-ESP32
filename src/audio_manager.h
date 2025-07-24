@@ -3,7 +3,9 @@
 
 #include <Arduino.h>
 #include "intel_glasses_config.h"
-#include "Audio.h"  // ESP32-Audio library for MP3 playback
+
+// Simplified audio manager for compilation - ESP8266Audio library disabled for now
+// TODO: Implement full audio functionality when library is properly configured
 
 // Audio file types
 enum AudioType {
@@ -39,10 +41,10 @@ struct AudioPlayback {
 
 class AudioManager {
 private:
-    Audio* audio;
+    // Simplified implementation - will be replaced with full audio support later
     bool isInitialized;
     bool isPlaying;
-    bool isMuted;
+    bool muteState;
     int globalVolume;
     
     // Current playback
@@ -78,6 +80,7 @@ public:
     bool playAudioData(uint8_t* audioData, size_t dataSize, AudioCategory category, bool priority = false);
     
     // System audio feedback
+    void playSystemAudio(const String& audioName);  // Generic system audio method
     void playHazardAlert(const String& hazardType, const String& direction = "");
     void playModeChangeConfirmation(const String& modeName);
     void playSystemStatus(const String& statusMessage);

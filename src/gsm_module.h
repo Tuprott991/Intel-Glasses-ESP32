@@ -1,15 +1,17 @@
 #ifndef GSM_MODULE_H
 #define GSM_MODULE_H
 
+#define TINY_GSM_MODEM_SIM800
 #include <TinyGsmClient.h>
 #include <HTTPClient.h>
 #include <ArduinoJson.h>
+#include <StreamDebugger.h>
 #include "intel_glasses_config.h"
 
 // SIM card APN credentials (configure for your carrier)
-const char* apn = "internet";      // Your APN
-const char* gprsUser = "";         // GPRS User (leave empty if not required)
-const char* gprsPass = "";         // GPRS Password (leave empty if not required)
+extern const char* apn;      // Your APN
+extern const char* gprsUser;         // GPRS User (leave empty if not required)
+extern const char* gprsPass;         // GPRS Password (leave empty if not required)
 
 class GSMModule {
 private:
