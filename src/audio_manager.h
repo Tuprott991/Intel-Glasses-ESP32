@@ -4,8 +4,10 @@
 #include <Arduino.h>
 #include "intel_glasses_config.h"
 
-// Simplified audio manager for compilation - ESP8266Audio library disabled for now
-// TODO: Implement full audio functionality when library is properly configured
+// ESP32 native audio support using I2S
+// Will use ESP32's built-in I2S capabilities for audio output
+#include "driver/i2s.h"
+#include "esp_system.h"
 
 // Audio file types
 enum AudioType {
